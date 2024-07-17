@@ -5,14 +5,22 @@ import kong.unirest.Unirest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Random;
+
 @RestController
 public class Controller {
     Gson gson = new Gson();
+    Random ran = new Random();
 
     @GetMapping(value = "/hello")
     public String index() {
-        System.out.println("we just got here");
         return "Greetings from Spring Boot!";
+    }
+
+    @GetMapping(value = "/random")
+    public String random() {
+        var n = ran.nextInt();
+        return "random num: " + n;
     }
 
     @GetMapping(value = "/joke")
