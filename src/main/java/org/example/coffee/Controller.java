@@ -1,23 +1,35 @@
 package org.example.coffee;
 
-import org.springframework.util.StringUtils;
+
+import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.Jedis;
 import com.google.gson.Gson;
 import kong.unirest.Unirest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import redis.clients.jedis.params.SetParams;
 
 import java.util.Random;
 
 @RestController
 public class Controller {
+/*    Jedis jedis = new Jedis("scli.redis.cache.windows.net", 6380, DefaultJedisClientConfig
+            .builder()
+            .ssl(true)
+            .password("")
+            .build());*/
+
     Gson gson = new Gson();
     Random ran = new Random();
 
-    @GetMapping(value = "/hello")
+    @GetMapping(value = "/")
     public String index() {
-        return "Greetings from Spring Boot!";
+        return "<h1>Welcome to this motherfriking website</h1>" +
+                "<ul><li>Shit's lightweight and loads fast</li>" +
+                "<li>Fits on all your shitty screens</li>" +
+                "<li>Looks the same in all your shitty browsers</li>" +
+                "<li>The motherfucker's accessible to every asshole that visits your site</li>" +
+                "<li>Shit's legible and gets your fucking point across</li>" +
+                "<li>Relax and read this <a href=\"/joke\">dad's joke</a></li>";
     }
 
     @GetMapping(value = "/random")
@@ -37,9 +49,8 @@ public class Controller {
         return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, end-start);
     }
 
-    @GetMapping(value = "/joke-redis")
+/*    @GetMapping(value = "/joke-redis")
     public String jokeRedis() {
-        Jedis jedis = new Jedis("127.0.0.1", 6379);
         JokeResponse jokeResponse = null;
         long duration = 0;
         var start = System.currentTimeMillis();
@@ -58,7 +69,7 @@ public class Controller {
             jokeResponse = gson.fromJson(response.getBody(), JokeResponse.class);
         }
         return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, duration);
-    }
+    }*/
 }
 
 class JokeResponse {
