@@ -5,12 +5,12 @@ import com.azure.messaging.servicebus.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.*;
 import com.google.gson.Gson;
 import kong.unirest.Unirest;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.time.Duration;
 import java.util.Random;
@@ -23,11 +23,12 @@ public class Controller {
 //            .credential(new DefaultAzureCredentialBuilder().build())
 //            .buildClient();
 
-    Jedis jedis = new Jedis("scli.redis.cache.windows.net", 6380, DefaultJedisClientConfig
-            .builder()
-            .ssl(true)
-            .password(System.getenv("redisconnectionstring"))
-            .build());
+    JedisPool redisPool = new JedisPool(new HostAndPort("scli.redis.cache.windows.net", 6380),
+            DefaultJedisClientConfig.builder()
+                .ssl(true)
+                .password(System.getenv("redisconnectionstring"))
+                .build());
+    Jedis jedis = redisPool.getResource();
 
     private final String connectionString = System.getenv("qconnectionstring");
     private final String queueName = "op";
@@ -97,8 +98,16 @@ public class Controller {
     public String jokeRedis() {
         JokeResponse jokeResponse = null;
         long duration = 0;
+        String joke = "";
         var start = System.currentTimeMillis();
-        var joke = jedis.get("joke");
+        try {
+            joke = jedis.get("joke");
+        } catch (JedisConnectionException e) {
+            jedis.close();
+            jedis = redisPool.getResource();
+            joke = jedis.get("joke");
+        }
+
         if (joke != null && !joke.isEmpty()) {
             duration = System.currentTimeMillis() - start;
             jokeResponse = gson.fromJson(joke, JokeResponse.class);
