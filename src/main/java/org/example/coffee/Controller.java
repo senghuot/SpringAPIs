@@ -23,11 +23,11 @@ public class Controller {
 //            .credential(new DefaultAzureCredentialBuilder().build())
 //            .buildClient();
 
-//    Jedis jedis = new Jedis("scli.redis.cache.windows.net", 6380, DefaultJedisClientConfig
-//            .builder()
-//            .ssl(true)
-//            .password("")
-//            .build());
+    Jedis jedis = new Jedis("scli.redis.cache.windows.net", 6380, DefaultJedisClientConfig
+            .builder()
+            .ssl(true)
+            .password(System.getenv("redisconnectionstring"))
+            .build());
 
     private final String connectionString = System.getenv("qconnectionstring");
     private final String queueName = "op";
@@ -93,7 +93,7 @@ public class Controller {
     }
 
 
-/*    @GetMapping(value = "/joke-redis")
+    @GetMapping(value = "/joke-redis")
     public String jokeRedis() {
         JokeResponse jokeResponse = null;
         long duration = 0;
@@ -113,7 +113,7 @@ public class Controller {
             jokeResponse = gson.fromJson(response.getBody(), JokeResponse.class);
         }
         return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, duration);
-    }*/
+    }
 }
 
 class JokeResponse {
