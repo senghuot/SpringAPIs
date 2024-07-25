@@ -1,49 +1,18 @@
 package org.example.coffee;
 
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.servicebus.*;
+import org.example.coffee.util.Q;
+import org.example.coffee.util.Redis;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.*;
 import com.google.gson.Gson;
 import kong.unirest.Unirest;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 
-import java.time.Duration;
 import java.util.Random;
 
 @RestController
 @Validated
 public class Controller {
-//    SecretClient secretClient = new SecretClientBuilder()
-//            .vaultUrl("https://key-queue.vault.azure.net/")
-//            .credential(new DefaultAzureCredentialBuilder().build())
-//            .buildClient();
-
-    JedisPool redisPool = new JedisPool(new HostAndPort("scli.redis.cache.windows.net", 6380),
-            DefaultJedisClientConfig.builder()
-                .ssl(true)
-                .password(System.getenv("redisconnectionstring"))
-                .build());
-    Jedis jedis = redisPool.getResource();
-
-    private final String connectionString = System.getenv("qconnectionstring");
-    private final String queueName = "op";
-
-    ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .sender()
-            .queueName(queueName)
-            .buildClient();
-
-    ServiceBusReceiverClient receiverClient = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .receiver()
-            .queueName(queueName)
-            .buildClient();
 
     Gson gson = new Gson();
     Random ran = new Random();
@@ -77,37 +46,23 @@ public class Controller {
     }
 
     @PostMapping(value = "/v1/push")
-    public ResponseEntity<String> PushMessage(@RequestBody Message json) {
-        if (json.message == null || json.message.isEmpty())
+    public ResponseEntity<String> Push(@RequestBody Message json) {
+        if (!Q.push(json.message))
             return ResponseEntity.badRequest().body("Message cannot be null or empty");
-        senderClient.sendMessage(new ServiceBusMessage(json.message));
         return ResponseEntity.ok("Received: " + json.message);
     }
 
     @GetMapping(value = "/v1/pop")
-    public String PushMessage() {
-        var messages = receiverClient.receiveMessages(1, Duration.ofSeconds(3));
-        for (var message: messages) {
-            return message.getBody().toString();
-        }
-        return "NO_NEW_MESSAGE";
+    public String Pop() {
+        return Q.pop();
     }
-
 
     @GetMapping(value = "/joke-redis")
     public String jokeRedis() {
         JokeResponse jokeResponse = null;
         long duration = 0;
-        String joke = "";
         var start = System.currentTimeMillis();
-        try {
-            joke = jedis.get("joke");
-        } catch (JedisConnectionException e) {
-            jedis.close();
-            jedis = redisPool.getResource();
-            joke = jedis.get("joke");
-        }
-
+        String joke = Redis.get("joke");
         if (joke != null && !joke.isEmpty()) {
             duration = System.currentTimeMillis() - start;
             jokeResponse = gson.fromJson(joke, JokeResponse.class);
@@ -117,8 +72,7 @@ public class Controller {
                     .header("Accept", "application/json")
                     .asString();
             duration = System.currentTimeMillis() - start;
-            jedis.set("joke", response.getBody());
-            jedis.expire("joke", 5);
+            Redis.set("joke", response.getBody());
             jokeResponse = gson.fromJson(response.getBody(), JokeResponse.class);
         }
         return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, duration);
