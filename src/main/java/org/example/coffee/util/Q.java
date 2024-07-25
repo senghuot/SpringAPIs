@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import java.time.Duration;
 
 public class Q {
-    static String connectionString = System.getenv("Q_CONNECTION_STRING");
+    static String connectionString = KeyVault.getSecret("queueConnectionString");
     static String queueName = "op";
 
     static ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
