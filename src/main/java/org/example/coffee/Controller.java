@@ -1,6 +1,6 @@
 package org.example.coffee;
 
-import org.example.coffee.util.Q;
+import org.example.coffee.util.Queue;
 import org.example.coffee.util.Redis;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +34,7 @@ public class Controller {
         return "random num: " + n;
     }
 
-    @GetMapping(value = "/joke")
+    @GetMapping(value = "/redis/joke")
     public String joke() {
         var start = System.currentTimeMillis();
         var response = Unirest.get("https://icanhazdadjoke.com/")
@@ -45,16 +45,16 @@ public class Controller {
         return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, end-start);
     }
 
-    @PostMapping(value = "/v1/push")
+    @PostMapping(value = "/push")
     public ResponseEntity<String> Push(@RequestBody Message json) {
-        if (!Q.push(json.message))
+        if (!Queue.push(json.message))
             return ResponseEntity.badRequest().body("Message cannot be null or empty");
         return ResponseEntity.ok("Received: " + json.message);
     }
 
-    @GetMapping(value = "/v1/pop")
+    @GetMapping(value = "/pop")
     public String Pop() {
-        return Q.pop();
+        return Queue.pop();
     }
 
     @GetMapping(value = "/joke-redis")

@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 
 import java.time.Duration;
 
-public class Q {
+public class Queue {
     static String connectionString = KeyVault.getSecret("queueConnectionString");
     static String queueName = "op";
 
