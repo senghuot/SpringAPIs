@@ -34,7 +34,7 @@ public class Controller {
         return "random num: " + n;
     }
 
-    @GetMapping(value = "/redis/joke")
+    @GetMapping(value = "/joke")
     public String joke() {
         var start = System.currentTimeMillis();
         var response = Unirest.get("https://icanhazdadjoke.com/")
@@ -57,7 +57,7 @@ public class Controller {
         return Queue.pop();
     }
 
-    @GetMapping(value = "/joke-redis")
+    @GetMapping(value = "/redis/joke")
     public String jokeRedis() {
         JokeResponse jokeResponse = null;
         long duration = 0;
