@@ -1,5 +1,7 @@
 package org.example.coffee;
 
+import org.example.coffee.record.JokeResponse;
+import org.example.coffee.record.Message;
 import org.example.coffee.util.Queue;
 import org.example.coffee.util.Redis;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
 import kong.unirest.Unirest;
 
-import java.util.Random;
+import java.util.Map;
 
 @RestController
 @Validated
 public class Controller {
 
     Gson gson = new Gson();
-    Random ran = new Random();
 
     @GetMapping(value = "/")
     public String index() {
@@ -26,12 +27,6 @@ public class Controller {
                 "<li>The motherfucker's accessible to every asshole that visits your site</li>" +
                 "<li>Shit's legible and gets your fucking point across</li>" +
                 "<li>Relax and read this <a href=\"/joke\">dad's joke</a></li>";
-    }
-
-    @GetMapping(value = "/random")
-    public String random() {
-        var n = ran.nextInt();
-        return "random num: " + n;
     }
 
     @GetMapping(value = "/joke")
@@ -57,6 +52,21 @@ public class Controller {
         return Queue.pop();
     }
 
+    @GetMapping(value = "/redis/push")
+    public ResponseEntity<String> redisPush(@RequestParam Map<String, String> params) {
+        var msg = params.get("message");
+        if (msg == null || msg.isEmpty())
+            return ResponseEntity.badRequest().body("Message cannot be null or empty");
+        var ith = Redis.push(msg);
+        return ResponseEntity.ok("Received: " + msg + "<br>" + "Position: " + ith);
+    }
+
+    @GetMapping(value = "/redis/pop")
+    public ResponseEntity<String> redisPop() {
+        var msg = Redis.pop();
+        return ResponseEntity.ok( msg == null ? "NO_NEW_MESSAGE" : msg);
+    }
+
     @GetMapping(value = "/redis/joke")
     public String jokeRedis() {
         JokeResponse jokeResponse = null;
@@ -77,13 +87,4 @@ public class Controller {
         }
         return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, duration);
     }
-}
-
-class JokeResponse {
-    String joke, id;
-    int status;
-}
-
-class Message {
-    public String message;
 }
