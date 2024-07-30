@@ -6,6 +6,7 @@ import org.example.coffee.util.Queue;
 import org.example.coffee.util.Redis;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
 import kong.unirest.Unirest;
@@ -14,20 +15,9 @@ import java.util.Map;
 
 @RestController
 @Validated
-public class Controller {
+public class ControllerRest {
 
     Gson gson = new Gson();
-
-    @GetMapping(value = "/")
-    public String index() {
-        return "<h1>Welcome to this motherfriking website</h1>" +
-                "<ul><li>Shit's lightweight and loads fast</li>" +
-                "<li>Fits on all your shitty screens</li>" +
-                "<li>Looks the same in all your shitty browsers</li>" +
-                "<li>The motherfucker's accessible to every asshole that visits your site</li>" +
-                "<li>Shit's legible and gets your fucking point across</li>" +
-                "<li>Relax and read this <a href=\"/joke\">dad's joke</a></li>";
-    }
 
     @GetMapping(value = "/joke")
     public String joke() {
