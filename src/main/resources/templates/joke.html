@@ -41,7 +41,7 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Id</th>
+            <th scope="col" class="d-none d-md-table-cell">Id</th>
             <th scope="col">Joke</th>
             <th scope="col">Duration</th>
             <th scope="col">Cache</th>
@@ -49,7 +49,7 @@
         </thead>
         <tbody>
         <tr>
-            <td th:text="${id}"></td>
+            <td th:text="${id}" class="d-none d-md-table-cell"></td>
             <td th:text="${joke}"></td>
             <td th:text="${duration} + ' ms'"></td>
             <td><label th:text="${cacheHit} ? 'hit' : 'miss'" th:classappend="${cacheHit} ? 'btn btn-outline-success' : 'btn btn-outline-secondary'"></label></td>
