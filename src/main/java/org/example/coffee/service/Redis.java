@@ -1,4 +1,4 @@
-package org.example.coffee.util;
+package org.example.coffee.service;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
@@ -22,7 +22,7 @@ public class Redis {
     private static JedisPool redisPool = new JedisPool(new HostAndPort("scli.redis.cache.windows.net", 6380),
             DefaultJedisClientConfig.builder()
                     .ssl(true)
-                    .password(KeyVault.getSecret("redisconnectionstring"))
+                    .password(KV.getSecret("redisconnectionstring"))
                     .build());
     private static Jedis jedis = redisPool.getResource();
 
@@ -40,6 +40,16 @@ public class Redis {
         return jedis.get(key);
     }
 
+    public static long push(final String key, final String[] val) {
+        try {
+            return jedis.lpush(key, val);
+        } catch (JedisConnectionException e) {
+            jedis.close();
+            jedis = redisPool.getResource();
+        }
+        return jedis.lpush(key, val);
+    }
+
     public static long push(final String val) {
         try {
             return jedis.lpush(Q_NAME, val);
@@ -51,13 +61,17 @@ public class Redis {
     }
 
     public static String pop() {
+        return pop(Q_NAME);
+    }
+
+    public static String pop(String name) {
         try {
-            return jedis.lpop(Q_NAME);
+            return jedis.lpop(name);
         } catch (JedisConnectionException e) {
             jedis.close();
             jedis = redisPool.getResource();
         }
-        return jedis.lpop(Q_NAME);
+        return jedis.lpop(name);
     }
 
 }

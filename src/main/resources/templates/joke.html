@@ -8,40 +8,54 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>Scott</title>
-    <link rel="icon" type="image/x-icon" href="home.png">
+    <link rel="icon" type="image/x-icon" href="../static/home.png">
 </head>
 <body>
 
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand home-icon" href="/">
-            <img src="home.png" width="36.5">
+            <img th:src="home.png" width="36.5">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="./joke">Joke</a>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Joke</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Redis
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Speed</a>
-                  <a class="dropdown-item" href="#">Queue</a>
+                <a class="dropdown-item" href="#">Joke</a>
+                <a class="dropdown-item" href="#">Queue</a>
               </div>
             </li>
           </ul>
         </div>
       </nav>
 
-    <blockquote class="blockquote spacer">
-        <p class="mb-0">I tried to be useful.</p>
-        <footer class="blockquote-footer">Charlie Munger</footer>
-    </blockquote>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Joke</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Cache</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${id}"></td>
+            <td th:text="${joke}"></td>
+            <td th:text="${duration} + ' ms'"></td>
+            <td><label th:text="${cacheHit} ? 'hit' : 'miss'" th:classappend="${cacheHit} ? 'btn btn-outline-success' : 'btn btn-outline-secondary'"></label></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>
@@ -49,10 +63,6 @@
 <style>
     .home-icon {
         padding: 0px;
-    }
-    .spacer {
-         padding-top: 40px;
-         padding-bottom: 40px
     }
 </style>
 

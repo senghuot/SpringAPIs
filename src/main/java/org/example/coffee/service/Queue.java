@@ -1,4 +1,4 @@
-package org.example.coffee.util;
+package org.example.coffee.service;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import java.time.Duration;
 
 public class Queue {
-    static String connectionString = KeyVault.getSecret("queueConnectionString");
+    static String connectionString = KV.getSecret("queueConnectionString");
     static String queueName = "op";
 
     static ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()

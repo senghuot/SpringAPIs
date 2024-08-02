@@ -2,8 +2,8 @@ package org.example.coffee;
 
 import org.example.coffee.record.JokeResponse;
 import org.example.coffee.record.Message;
-import org.example.coffee.util.Queue;
-import org.example.coffee.util.Redis;
+import org.example.coffee.service.Queue;
+import org.example.coffee.service.Redis;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.ui.Model;
@@ -19,16 +19,16 @@ public class ControllerRest {
 
     Gson gson = new Gson();
 
-    @GetMapping(value = "/joke")
-    public String joke() {
-        var start = System.currentTimeMillis();
-        var response = Unirest.get("https://icanhazdadjoke.com/")
-                .header("Accept", "application/json")
-                .asString();
-        var end = System.currentTimeMillis();
-        var jokeResponse = gson.fromJson(response.getBody(), JokeResponse.class);
-        return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, end-start);
-    }
+//    @GetMapping(value = "/joke")
+//    public String joke() {
+//        var start = System.currentTimeMillis();
+//        var response = Unirest.get("https://icanhazdadjoke.com/")
+//                .header("Accept", "application/json")
+//                .asString();
+//        var end = System.currentTimeMillis();
+//        var jokeResponse = gson.fromJson(response.getBody(), JokeResponse.class);
+//        return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, end-start);
+//    }
 
     @PostMapping(value = "/push")
     public ResponseEntity<String> Push(@RequestBody Message json) {
