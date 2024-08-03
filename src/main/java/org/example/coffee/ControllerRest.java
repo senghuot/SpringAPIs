@@ -19,17 +19,6 @@ public class ControllerRest {
 
     Gson gson = new Gson();
 
-//    @GetMapping(value = "/joke")
-//    public String joke() {
-//        var start = System.currentTimeMillis();
-//        var response = Unirest.get("https://icanhazdadjoke.com/")
-//                .header("Accept", "application/json")
-//                .asString();
-//        var end = System.currentTimeMillis();
-//        var jokeResponse = gson.fromJson(response.getBody(), JokeResponse.class);
-//        return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, end-start);
-//    }
-
     @PostMapping(value = "/push")
     public ResponseEntity<String> Push(@RequestBody Message json) {
         if (!Queue.push(json.message))
@@ -55,26 +44,5 @@ public class ControllerRest {
     public ResponseEntity<String> redisPop() {
         var msg = Redis.pop();
         return ResponseEntity.ok( msg == null ? "NO_NEW_MESSAGE" : msg);
-    }
-
-    @GetMapping(value = "/redis/joke")
-    public String jokeRedis() {
-        JokeResponse jokeResponse = null;
-        long duration = 0;
-        var start = System.currentTimeMillis();
-        String joke = Redis.get("joke");
-        if (joke != null && !joke.isEmpty()) {
-            duration = System.currentTimeMillis() - start;
-            jokeResponse = gson.fromJson(joke, JokeResponse.class);
-        } else {
-            start = System.currentTimeMillis();
-            var response = Unirest.get("https://icanhazdadjoke.com/")
-                    .header("Accept", "application/json")
-                    .asString();
-            duration = System.currentTimeMillis() - start;
-            Redis.set("joke", response.getBody());
-            jokeResponse = gson.fromJson(response.getBody(), JokeResponse.class);
-        }
-        return String.format("Joke: \"%s\" <br> Duration: %s ms ", jokeResponse.joke, duration);
     }
 }

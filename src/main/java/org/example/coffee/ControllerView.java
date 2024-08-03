@@ -1,6 +1,7 @@
 package org.example.coffee;
 
 import com.google.gson.Gson;
+import io.netty.util.internal.StringUtil;
 import org.example.coffee.record.JokeResponse;
 import org.example.coffee.record.JokeResponses;
 import org.example.coffee.service.Redis;
@@ -30,11 +31,11 @@ public class ControllerView {
         var cacheHit = false;
         var response = Redis.pop("Jokes");
         JokeResponse joke;
-        if (response == null || response.isEmpty()) {
+        if (StringUtil.isNullOrEmpty(response)) {
             var result = Unirest.get("https://icanhazdadjoke.com/search")
                     .header("Accept", "application/json")
                     .queryString("page", random.nextInt(30))
-                    .queryString("limit", 5)
+                    .queryString("limit", 10)
                     .asString();
 
             var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
