@@ -35,7 +35,7 @@ public class ControllerView {
             var result = Unirest.get("https://icanhazdadjoke.com/search")
                     .header("Accept", "application/json")
                     .queryString("page", random.nextInt(30))
-                    .queryString("limit", 10)
+                    .queryString("limit", 5)
                     .asString();
 
             var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
