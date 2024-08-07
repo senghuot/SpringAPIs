@@ -32,21 +32,21 @@ public class ControllerView {
     public String joke(Model model) {
         long start = System.currentTimeMillis(), end = start;
         var cacheHit = false;
-        var response = Redis.pop("Jokes");
+        var response = "";/*Redis.pop("Jokes");*/
         JokeResponse joke;
         if (StringUtil.isNullOrEmpty(response)) {
             var result = Unirest.get("https://icanhazdadjoke.com/search")
                     .header("Accept", "application/json")
                     .queryString("page", random.nextInt(30))
-                    .queryString("limit", 5)
+                    .queryString("limit", 1)
                     .asString();
 
             var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
             var jokes = new ArrayList<String>();
-            for (var i = 1; i < jokeResponses.results.length; i++) {
+            for (var i = 0; i < jokeResponses.results.length; i++) {
                 var curJoke = jokeResponses.results[i];
                 var json = gson.toJson(curJoke);
-                logger.info("json: " + json);
+                logger.info("About to push: " + json);
                 jokes.add(json);
             }
             Redis.push("Jokes", jokes.toArray(new String[0]));
