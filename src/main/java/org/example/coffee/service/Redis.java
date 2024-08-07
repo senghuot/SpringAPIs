@@ -64,6 +64,10 @@ public class Redis {
         return pop(Q_NAME);
     }
 
+    public static Jedis getJedis() {
+        return redisPool.getResource();
+    }
+
     public static String pop(String name) {
         try {
             return jedis.lpop(name);

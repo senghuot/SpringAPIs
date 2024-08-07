@@ -30,15 +30,16 @@ public class ControllerView {
 
     @GetMapping("/joke")
     public String joke(Model model) {
+        var jedis = Redis.getJedis();
         long start = System.currentTimeMillis(), end = start;
         var cacheHit = false;
-        var response = "";/*Redis.pop("Jokes");*/
+        var response = jedis.lpop("Jokes");
         JokeResponse joke;
         if (StringUtil.isNullOrEmpty(response)) {
             var result = Unirest.get("https://icanhazdadjoke.com/search")
                     .header("Accept", "application/json")
                     .queryString("page", random.nextInt(30))
-                    .queryString("limit", 1)
+                    .queryString("limit", 10)
                     .asString();
 
             var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
@@ -46,10 +47,9 @@ public class ControllerView {
             for (var i = 0; i < jokeResponses.results.length; i++) {
                 var curJoke = jokeResponses.results[i];
                 var json = gson.toJson(curJoke);
-                logger.info("About to push: " + json);
                 jokes.add(json);
             }
-            Redis.push("Jokes", jokes.toArray(new String[0]));
+            jedis.lpush("Jokes", jokes.toArray(new String[0]));
 
             end = System.currentTimeMillis();
             joke = jokeResponses.results[0];
@@ -59,6 +59,7 @@ public class ControllerView {
             joke = gson.fromJson(response, JokeResponse.class);
             cacheHit = true;
         }
+        jedis.close();
 
         model.addAttribute("joke", joke.joke);
         model.addAttribute("duration", end-start);
