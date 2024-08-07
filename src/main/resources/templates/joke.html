@@ -76,7 +76,7 @@
 
 <body>
 <div class="container p-4 mx-auto text-left">
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto" style="margin-bottom: 20px;">
         <table class="table table-zebra">
             <thead>
             <tr>
@@ -87,13 +87,19 @@
             </thead>
             <tbody>
             <tr>
-                <td th:text="${joke}"> asdfaasdfasdfsasdfasdfasddf </td>
-                <td th:text="${duration} + ' ms'"> asdfasdfasdfasdfasdfsdfasdfasfdasdf </td>
-                <td><button th:text="${cacheHit} ? 'hit' : 'miss'" th:classappend="${cacheHit} ? 'btn btn-outline btn-success' : 'btn btn-outline'"> yes </button></td>
+                <td th:text="${joke}">hello</td>
+                <td th:text="${duration} + ' ms'">10ms</td>
+                <td th:text="${cacheHit} ? 'hit' : 'miss'">hit</td>
             </tr>
             </tbody>
         </table>
     </div>
+</div>
+
+<div class="container p-4 mx-auto text-right" style=" align-items: center;">
+    <a href="/joke" >
+        <button class="btn btn-outline">More Joke</button>
+    </a>
 </div>
 </body>
 </html>

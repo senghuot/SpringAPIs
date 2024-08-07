@@ -72,13 +72,14 @@
     </div>
 </head>
 <style>
-    .rocket-tail {
-        fill: rgb(8 145 178)
+    .theme-color {
+        fill: rgb(8 145 178);
+        color: rgb(8 145 178);
     }
 </style>
 
 <body>
-<div class="hero bg-base-300 h-[80vh]">
+<div class="hero bg-base-300 h-[70vh]">
     <div class="hero-content">
         <div class="max-w-lg">
             <h1 class="text-5xl font-bold system-ui">
@@ -91,31 +92,101 @@
                 > coding out wild ideas!
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 animate-bounce inline">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                    <path class="rocket-tail" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84" />
+                    <path class="theme-color" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84" />
                 </svg>
             </p>
+            <a href="#product-section">
+                <button class="btn btn-outline">Checkout Products
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 inline">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                    </svg>
+                </button>
+            </a>
         </div>
     </div>
 </div>
 </div>
 
-<div class="container p-4 mx-auto text-center">
-    <a href="/joke">
-        <div class="stats shadow animate-expand text-left">
-            <div class="stat">
-                <div class="stat-title">Dad's Joke</div>
-                <div class="stat-value text-primary">700+</div>
-                <div class="stat-desc">single digit ms latency</div>
-            </div>
-            <div class="stat">
-                <div class="stat-figure text-secondary">
-                </div>
-                <div class="stat-value">20%</div>
-                <div class="stat-title">Tasks done</div>
-                <div class="stat-desc text-secondary">don't get me started lol</div>
-            </div>
+<div class="container mx-auto text-center" style="margin-top: 50px; margin-bottom:50px;">
+    <div class="stats text-left stats-vertical sm:stats-horizontal shadow">
+    <div class="stat">
+        <div class="stat-figure theme-color">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z" />
+            </svg>
         </div>
-    </a>
+        <div class="stat-title">Online Since</div>
+        <div class="stat-value font-mono theme-color">7/24'</div>
+        <div class="stat-desc">4 major iterations</div>
+    </div>
+    <div class="stat">
+        <div class="stat-figure text-primary">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    class="inline-block h-8 w-8 stroke-current">
+                <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+        </div>
+        <div class="stat-title">Total Products</div>
+        <div class="stat-value text-primary">1</div>
+        <div class="stat-desc">single digit ms latency</div>
+    </div>
+    <div class="stat">
+        <div class="stat-figure text-secondary">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    class="inline-block h-8 w-8 stroke-current">
+                <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+        </div>
+        <div class="stat-title">Upcoming</div>
+        <div class="stat-value">2</div>
+        <div class="stat-desc text-secondary">don't get me started lol</div>
+    </div>
 </div>
+</div>
+<div class="flex w-full flex-col" id="product-section">
+    <div class="divider font-mono">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12 inline">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+        </svg>
+        products
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12 inline">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+        </svg>
+    </div>
+</div>
+
+<div class="container mx-auto w-96" style="margin-bottom: 200px;">
+    <div class="flex w-full flex-col" style="margin-top: 50px;">
+        <a class="bg-base-100 shadow-xl card border-2 border-base-content/5 card-compact transition-all duration-200 hover:shadow hover:-translate-y-1" target="\_blank" rel="noopener, noreferrer" href="/joke">
+            <figure>
+                <img
+                        src="https://codersee.com/wp-content/uploads/2022/12/redis_database_explained_2022_featured-1536x864.png"
+                        alt="Shoes" />
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">
+                    Dad's Joke
+                    <div class="badge badge-primary text-xs badge-outline">NEW</div>
+                </h2>
+                <p>Low latency with Redis. Dad joke is a bonus 😅</p>
+            </div>
+        </a>
+    </div>
+</div>
+
 </body>
 </html>
