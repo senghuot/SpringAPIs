@@ -15,14 +15,6 @@
                 </div>
                 <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-40 p-2 shadow">
                     <li>
-                        <a href="/">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            Home
-                        </a>
-                    </li>
-                    <li>
                         <a>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
@@ -32,6 +24,13 @@
                     </li>
                 </ul>
             </div>
+        </div>
+        <div class="navbar-center">
+            <a class="btn btn-ghost text-xl" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </a>
         </div>
         <div class="navbar-end">
             <label class="grid cursor-pointer place-items-center">
@@ -115,54 +114,54 @@
 </div>
 
 <div class="container mx-auto text-center" style="margin-top: 50px; margin-bottom:50px;">
-    <div class="stats text-left stats-vertical sm:stats-horizontal shadow bg-base-200 border" >
-    <div class="stat">
-        <div class="stat-figure theme-color">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z" />
-            </svg>
+    <div class="stats text-left stats-vertical sm:stats-horizontal shadow">
+        <div class="stat">
+            <div class="stat-figure theme-color">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z" />
+                </svg>
+            </div>
+            <div class="stat-title">Online Since</div>
+            <div class="stat-value font-mono theme-color">7/24'</div>
+            <div class="stat-desc">4 major iterations</div>
         </div>
-        <div class="stat-title">Online Since</div>
-        <div class="stat-value font-mono theme-color">7/24'</div>
-        <div class="stat-desc">4 major iterations</div>
-    </div>
-    <div class="stat">
-        <div class="stat-figure text-primary">
-            <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    class="inline-block h-8 w-8 stroke-current">
-                <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-            </svg>
+        <div class="stat">
+            <div class="stat-figure text-primary">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        class="inline-block h-8 w-8 stroke-current">
+                    <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+            </div>
+            <div class="stat-title">Total Products</div>
+            <div class="stat-value text-primary">1</div>
+            <div class="stat-desc">single digit ms latency</div>
         </div>
-        <div class="stat-title">Total Products</div>
-        <div class="stat-value text-primary">1</div>
-        <div class="stat-desc">single digit ms latency</div>
-    </div>
-    <div class="stat">
-        <div class="stat-figure text-secondary">
-            <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    class="inline-block h-8 w-8 stroke-current">
-                <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
+        <div class="stat">
+            <div class="stat-figure text-secondary">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        class="inline-block h-8 w-8 stroke-current">
+                    <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <div class="stat-title">Upcoming</div>
+            <div class="stat-value">2</div>
+            <div class="stat-desc text-secondary">don't get me started lol</div>
         </div>
-        <div class="stat-title">Upcoming</div>
-        <div class="stat-value">2</div>
-        <div class="stat-desc text-secondary">don't get me started lol</div>
     </div>
-</div>
 </div>
 <div class="flex w-full flex-col" id="product-section">
     <div class="divider font-mono">
