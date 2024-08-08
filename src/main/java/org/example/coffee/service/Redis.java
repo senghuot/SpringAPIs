@@ -28,23 +28,32 @@ public class Redis {
                     .build());
 
     public static long push(final String key, final String[] val) {
+        Jedis jedis = null;
+        long response = 0;
         try {
-            var jedis = redisPool.getResource();
-            return jedis.lpush(key, val);
+            jedis = redisPool.getResource();
+            response = jedis.lpush(key, val);
         } catch (JedisConnectionException e) {
+            jedis = redisPool.getResource();
+            response = jedis.lpush(key, val);
             logger.warn("JedisConnectionException: ", e);
         }
-        return redisPool.getResource().lpush(key, val);
+        jedis.close();
+        return response;
     }
 
     public static String pop(String name) {
+        Jedis jedis = null;
+        String response = "";
         try {
-            var jedis = redisPool.getResource();
-            return jedis.lpop(name);
+            jedis = redisPool.getResource();
+            response = jedis.lpop(name);
         } catch (JedisConnectionException e) {
+            jedis = redisPool.getResource();
+            response = jedis.lpop(name);
             logger.warn("JedisConnectionException: ", e);
         }
-        return redisPool.getResource().lpop(name);
+        jedis.close();
+        return response;
     }
-
 }
