@@ -43,7 +43,7 @@ public class ControllerView {
 
             var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
             var jokes = new ArrayList<String>();
-            for (var i = 0; i < jokeResponses.results.length; i++) {
+            for (var i = 1; i < jokeResponses.results.length; i++) {
                 var curJoke = jokeResponses.results[i];
                 var json = gson.toJson(curJoke);
                 jokes.add(json);
