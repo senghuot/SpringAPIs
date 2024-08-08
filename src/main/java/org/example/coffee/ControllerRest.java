@@ -30,19 +30,4 @@ public class ControllerRest {
     public String Pop() {
         return Queue.pop();
     }
-
-    @GetMapping(value = "/redis/push")
-    public ResponseEntity<String> redisPush(@RequestParam Map<String, String> params) {
-        var msg = params.get("message");
-        if (msg == null || msg.isEmpty())
-            return ResponseEntity.badRequest().body("Message cannot be null or empty");
-        var ith = Redis.push(msg);
-        return ResponseEntity.ok("Received: " + msg + "<br>" + "Position: " + ith);
-    }
-
-    @GetMapping(value = "/redis/pop")
-    public ResponseEntity<String> redisPop() {
-        var msg = Redis.pop();
-        return ResponseEntity.ok( msg == null ? "NO_NEW_MESSAGE" : msg);
-    }
 }

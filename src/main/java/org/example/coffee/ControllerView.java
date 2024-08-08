@@ -30,10 +30,9 @@ public class ControllerView {
 
     @GetMapping("/joke")
     public String joke(Model model) {
-        var jedis = Redis.getJedis();
         long start = System.currentTimeMillis(), end = start;
         var cacheHit = false;
-        var response = jedis.lpop("Jokes");
+        var response = Redis.pop("Jokes");
         JokeResponse joke;
         if (StringUtil.isNullOrEmpty(response)) {
             var result = Unirest.get("https://icanhazdadjoke.com/search")
@@ -49,17 +48,15 @@ public class ControllerView {
                 var json = gson.toJson(curJoke);
                 jokes.add(json);
             }
-            jedis.lpush("Jokes", jokes.toArray(new String[0]));
+            Redis.push("Jokes", jokes.toArray(new String[0]));
 
             end = System.currentTimeMillis();
             joke = jokeResponses.results[0];
         } else {
             end = System.currentTimeMillis();
-            logger.info("response: " + response);
             joke = gson.fromJson(response, JokeResponse.class);
             cacheHit = true;
         }
-        jedis.close();
 
         model.addAttribute("joke", joke.joke);
         model.addAttribute("duration", end-start);
