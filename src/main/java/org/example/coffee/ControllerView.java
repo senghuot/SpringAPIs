@@ -28,6 +28,11 @@ public class ControllerView {
         return "index";
     }
 
+    @GetMapping("/about")
+    public String about(Model model) {
+        return "about";
+    }
+
     @GetMapping("/joke")
     public String joke(Model model) {
         long start = System.currentTimeMillis(), end = start;
