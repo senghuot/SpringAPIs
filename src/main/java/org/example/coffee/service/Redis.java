@@ -5,10 +5,7 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.*;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.params.SetParams;
 
@@ -21,39 +18,56 @@ public class Redis {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-    private static JedisPool redisPool = new JedisPool(new HostAndPort("scli.redis.cache.windows.net", 6380),
+    static JedisPoolConfig poolConfig = new JedisPoolConfig();
+    static {
+        poolConfig.setMinIdle(10);
+        poolConfig.setMaxIdle(25);
+        poolConfig.setMaxTotal(50);
+    }
+
+    private static JedisPool redisPool = new JedisPool(poolConfig,
+            new HostAndPort("scli.redis.cache.windows.net", 6380),
             DefaultJedisClientConfig.builder()
                     .ssl(true)
                     .password(KV.getSecret("redisconnectionstring"))
                     .build());
 
-    public static long push(final String key, final String[] val) {
-        Jedis jedis = null;
-        long response = 0;
+    public static String warmup() {
         try {
-            jedis = redisPool.getResource();
-            response = jedis.lpush(key, val);
+            var jedis = redisPool.getResource();
+            var response = jedis.ping();
+            jedis.close();
+            return response;
         } catch (JedisConnectionException e) {
-            jedis = redisPool.getResource();
-            response = jedis.lpush(key, val);
             logger.warn("JedisConnectionException: ", e);
         }
-        jedis.close();
-        return response;
+        return "";
+    }
+    public static long push(final String key, final String[] val) {
+        for (var i=0; i<5; i++) {
+            try {
+                var jedis = redisPool.getResource();
+                var response = jedis.lpush(key, val);
+                jedis.close();
+                return response;
+            } catch (JedisConnectionException e) {
+                logger.warn("JedisConnectionException: ", e);
+            }
+        }
+        return -1;
     }
 
     public static String pop(String name) {
-        Jedis jedis = null;
-        String response = "";
-        try {
-            jedis = redisPool.getResource();
-            response = jedis.lpop(name);
-        } catch (JedisConnectionException e) {
-            jedis = redisPool.getResource();
-            response = jedis.lpop(name);
-            logger.warn("JedisConnectionException: ", e);
+        for (var i=0; i<5; i++) {
+            try {
+                var jedis = redisPool.getResource();
+                var response = jedis.lpop(name);
+                jedis.close();
+                return response;
+            } catch (JedisConnectionException e) {
+                logger.warn("JedisConnectionException: ", e);
+            }
         }
-        jedis.close();
-        return response;
+        return "";
     }
 }
