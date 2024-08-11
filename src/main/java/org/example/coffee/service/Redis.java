@@ -20,9 +20,9 @@ public class Redis {
 
     static JedisPoolConfig poolConfig = new JedisPoolConfig();
     static {
-        poolConfig.setMinIdle(10);
-        poolConfig.setMaxIdle(25);
-        poolConfig.setMaxTotal(50);
+        poolConfig.setMinIdle(20); // up to 20 idle connections ready to serve
+        poolConfig.setMaxTotal(50); // total connection of idel + active, control perf and cogs
+        // poolConfig.setMaxIdle(25);
     }
 
     private static JedisPool redisPool = new JedisPool(poolConfig,
