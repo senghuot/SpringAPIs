@@ -39,7 +39,7 @@ public class Redis {
             jedis.close();
             return response;
         } catch (JedisConnectionException e) {
-            logger.warn("JedisConnectionException: ", e);
+            logger.warn("[Redis.java] JedisConnectionException: ", e);
         }
         return "";
     }
@@ -51,7 +51,7 @@ public class Redis {
                 jedis.close();
                 return response;
             } catch (JedisConnectionException e) {
-                logger.warn("JedisConnectionException: ", e);
+                logger.warn("[Redis.java] JedisConnectionException: ", e);
             }
         }
         return -1;
@@ -65,7 +65,7 @@ public class Redis {
                 jedis.close();
                 return response;
             } catch (JedisConnectionException e) {
-                logger.warn("JedisConnectionException: ", e);
+                logger.warn("[Redis.java] JedisConnectionException: ", e);
             }
         }
         return "";
