@@ -39,4 +39,5 @@ build/
 
 .idea/*
 .dockerignore
-.env
+application.properties
+run
