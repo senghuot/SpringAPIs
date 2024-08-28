@@ -1,17 +1,11 @@
 package org.example.coffee;
 
-import org.example.coffee.record.JokeResponse;
 import org.example.coffee.record.Message;
 import org.example.coffee.service.Queue;
-import org.example.coffee.service.Redis;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
-import kong.unirest.Unirest;
-
-import java.util.Map;
 
 @RestController
 @Validated
