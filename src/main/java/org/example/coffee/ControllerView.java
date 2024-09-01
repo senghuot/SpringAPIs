@@ -1,9 +1,12 @@
 package org.example.coffee;
 
+import com.datastax.oss.driver.api.core.CqlSession;
 import com.google.gson.Gson;
 import io.netty.util.internal.StringUtil;
 import org.example.coffee.record.JokeResponse;
 import org.example.coffee.record.JokeResponses;
+import org.example.coffee.repository.JokeRepository;
+import org.example.coffee.service.CassandraDB;
 import org.example.coffee.service.Redis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +46,7 @@ public class ControllerView {
             var result = Unirest.get("https://icanhazdadjoke.com/search")
                     .header("Accept", "application/json")
                     .queryString("page", random.nextInt(30))
-                    .queryString("limit", 10)
+                    .queryString("limit", 20)
                     .asString();
 
             var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
@@ -57,6 +60,41 @@ public class ControllerView {
 
             end = System.currentTimeMillis();
             joke = jokeResponses.results[0];
+        } else {
+            end = System.currentTimeMillis();
+            joke = gson.fromJson(response, JokeResponse.class);
+            cacheHit = true;
+        }
+
+        model.addAttribute("joke", joke.joke);
+        model.addAttribute("duration", end-start);
+        model.addAttribute("id", joke.id);
+        model.addAttribute("cacheHit", cacheHit);
+
+        return "joke";
+    }
+
+    @GetMapping("/joke2")
+    public String jokev2(Model model) throws Exception {
+        long start = System.currentTimeMillis(), end = start;
+        var cacheHit = false;
+        var response = Redis.pop("Jokes");
+        JokeResponse joke;
+        if (StringUtil.isNullOrEmpty(response)) {
+            var session = CassandraDB.getSession();
+            JokeRepository repo = new JokeRepository(session, "keyspacedata", "joke");
+            var jokes = repo.getJokes();
+            CassandraDB.closeSession(session);
+
+            joke = jokes[0];
+            var cachedJokes = new ArrayList<String>();
+            for (var i = 1; i < jokes.length; i++) {
+                var curJoke = jokes[i];
+                var json = gson.toJson(curJoke);
+                cachedJokes.add(json);
+            }
+            Redis.push("Jokes", cachedJokes.toArray(new String[0]));
+            end = System.currentTimeMillis();
         } else {
             end = System.currentTimeMillis();
             joke = gson.fromJson(response, JokeResponse.class);

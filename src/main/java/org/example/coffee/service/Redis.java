@@ -7,16 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;
 import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.params.SetParams;
 
 public class Redis {
 
     private static final Logger logger = LoggerFactory.getLogger(Redis.class);
-
-    static SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl("https://key-queue.vault.azure.net/")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
 
     static JedisPoolConfig poolConfig = new JedisPoolConfig();
     static {
