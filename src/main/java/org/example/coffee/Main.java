@@ -15,9 +15,9 @@ public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(Main.class, args);
         Redis.warmup();
         CassandraDB.warmup();
+        SpringApplication.run(Main.class, args);
     }
 
 }

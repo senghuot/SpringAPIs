@@ -6,7 +6,6 @@ import java.util.Random;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
 import com.datastax.oss.driver.api.core.cql.Row;
-import com.datastax.oss.driver.api.core.CqlSession;
 import com.google.gson.Gson;
 import kong.unirest.Unirest;
 import org.example.coffee.record.JokeResponse;
@@ -21,22 +20,15 @@ import org.slf4j.LoggerFactory;
  */
 public class JokeRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
-    private CqlSession session;
-    private String keyspace;
-    private String table;
-
-    public JokeRepository(CqlSession session, String keyspace, String table) {
-        this.session = session;
-        this.keyspace = keyspace;
-        this.table = table;
-    }
+    private String keyspace = "keyspacedata";
+    private String table = "joke";
 
     /**
      * Create keyspace uprofile in cassandra DB
      */
     public void dropKeyspace() {
         String query = "DROP KEYSPACE IF EXISTS "+keyspace+"";
-        session.execute(query);
+        CassandraDB.getSession().execute(query);
         LOGGER.info("dropped keyspace '"+keyspace+"'");
     }
 
@@ -45,7 +37,7 @@ public class JokeRepository {
      */
     public void createKeyspace() {
         String query = "CREATE KEYSPACE "+keyspace+" WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy', 'datacenter1' : 1 }";
-        session.execute(query);
+        CassandraDB.getSession().execute(query);
         LOGGER.info("Created keyspace '"+keyspace+"'");
     }
 
@@ -54,15 +46,21 @@ public class JokeRepository {
      */
     public void createTable() {
         String query = "CREATE TABLE "+keyspace+"."+table+" (id int PRIMARY KEY, joke text)";
-        session.execute(query);
+        CassandraDB.getSession().execute(query);
         LOGGER.info("Created table '"+table+"'");
     }
 
     public JokeResponse[] getJokes() {
-        int startId = new Random().nextInt(690) + 1;
-        final String query = "SELECT * FROM "+keyspace+"."+table+" WHERE id >= " + startId + " LIMIT 5 ALLOW FILTERING";
+        var id = new Random().nextInt(690) + 1;
+        String ids = "(" + id;
+        for (var i=1; i<3; i++) {
+            ids += "," + (id + i);
+        }
+
+        final String query = "SELECT * FROM "+keyspace+"."+table+" WHERE id IN " + ids + ")";
+        var session = CassandraDB.getSession();
         List<Row> rows = session.execute(query).all();
-        var jokes = new JokeResponse[5];
+        var jokes = new JokeResponse[3];
         for (var i = 0; i < jokes.length; i++) {
             var joke = new JokeResponse();
             joke.id = "" + rows.get(i).getInt("id");
@@ -72,27 +70,17 @@ public class JokeRepository {
         return jokes;
     }
 
-    /**
-     * Select a row from Joke table
-     *
-     * @param id user_id
-     */
     public JokeResponse getJoke(int id) {
         final String query = "SELECT * FROM "+keyspace+"."+table+" where id = " + id;
-        Row row = session.execute(query).one();
+        Row row = CassandraDB.getSession().execute(query).one();
         var joke = new JokeResponse();
         joke.id = "" + row.getInt("id");
         joke.joke = row.getString("joke");
         return joke;
     }
 
-    /**
-     * Insert a row into Joke table
-     *
-     * @param id   joke_id
-     * @param joke
-     */
     public void insertJoke(int id, String joke) {
+        var session = CassandraDB.getSession();
         PreparedStatement prepared = session.prepare(prepareInsertStatement());
         BoundStatement bound = prepared.bind(id, joke).setIdempotent(true);
         session.execute(bound);
@@ -115,7 +103,6 @@ public class JokeRepository {
 
         try {
             var cassandraSession = CassandraDB.getSession();
-            var repository = new JokeRepository(cassandraSession, keyspace, table);
             var gson = new Gson();
             for (var i=1; i<=35; i++) {
                 var result = Unirest.get("https://icanhazdadjoke.com/search")
@@ -126,11 +113,11 @@ public class JokeRepository {
 
                 var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
                 for (var j = 0; j < jokeResponses.results.length; j++) {
-                    repository.insertJoke(jokeid++, jokeResponses.results[j].joke);
+                    insertJoke(jokeid++, jokeResponses.results[j].joke);
                 }
             }
         } catch (Exception e) {
-            LOGGER.info("Something went wrong: " + e);
+            LOGGER.error("Something went wrong: " + e);
         }
         finally {
             LOGGER.info("Please delete your table after verifying the presence of the data in portal or from CQL");

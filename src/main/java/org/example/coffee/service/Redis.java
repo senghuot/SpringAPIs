@@ -26,16 +26,14 @@ public class Redis {
                     .password(KV.getSecret("redisconnectionstring"))
                     .build());
 
-    public static String warmup() {
+    public static void warmup() {
         try {
             var jedis = redisPool.getResource();
             var response = jedis.ping();
             jedis.close();
-            return response;
         } catch (JedisConnectionException e) {
-            logger.warn("[Redis.java] JedisConnectionException: ", e);
+            logger.error("[Redis.java] JedisConnectionException: ", e);
         }
-        return "";
     }
     public static long push(final String key, final String[] val) {
         for (var i=0; i<5; i++) {

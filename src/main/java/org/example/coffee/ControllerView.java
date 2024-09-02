@@ -1,12 +1,10 @@
 package org.example.coffee;
 
-import com.datastax.oss.driver.api.core.CqlSession;
 import com.google.gson.Gson;
 import io.netty.util.internal.StringUtil;
 import org.example.coffee.record.JokeResponse;
 import org.example.coffee.record.JokeResponses;
 import org.example.coffee.repository.JokeRepository;
-import org.example.coffee.service.CassandraDB;
 import org.example.coffee.service.Redis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +23,7 @@ public class ControllerView {
     private static final Logger logger = LoggerFactory.getLogger(Redis.class);
     Gson gson = new Gson();
     Random random = new Random();
+    JokeRepository jokeRepo = new JokeRepository();
 
     @GetMapping("/")
     public String homepage(Model model) {
@@ -81,11 +80,7 @@ public class ControllerView {
         var response = Redis.pop("Jokes");
         JokeResponse joke;
         if (StringUtil.isNullOrEmpty(response)) {
-            var session = CassandraDB.getSession();
-            JokeRepository repo = new JokeRepository(session, "keyspacedata", "joke");
-            var jokes = repo.getJokes();
-            CassandraDB.closeSession(session);
-
+            var jokes = jokeRepo.getJokes();
             joke = jokes[0];
             var cachedJokes = new ArrayList<String>();
             for (var i = 1; i < jokes.length; i++) {
