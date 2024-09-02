@@ -101,6 +101,6 @@ public class ControllerView {
         model.addAttribute("id", joke.id);
         model.addAttribute("cacheHit", cacheHit);
 
-        return "joke";
+        return "joke2";
     }
 }
