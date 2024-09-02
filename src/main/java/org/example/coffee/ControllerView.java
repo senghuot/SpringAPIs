@@ -35,7 +35,7 @@ public class ControllerView {
         return "about";
     }
 
-    @GetMapping("/joke")
+    @GetMapping("/joke-v0")
     public String joke(Model model) {
         long start = System.currentTimeMillis(), end = start;
         var cacheHit = false;
@@ -70,10 +70,10 @@ public class ControllerView {
         model.addAttribute("id", joke.id);
         model.addAttribute("cacheHit", cacheHit);
 
-        return "joke";
+        return "joke-v0";
     }
 
-    @GetMapping("/joke2")
+    @GetMapping("/joke")
     public String jokev2(Model model) throws Exception {
         long start = System.currentTimeMillis(), end = start;
         var cacheHit = false;
@@ -101,6 +101,6 @@ public class ControllerView {
         model.addAttribute("id", joke.id);
         model.addAttribute("cacheHit", cacheHit);
 
-        return "joke2";
+        return "joke";
     }
 }
