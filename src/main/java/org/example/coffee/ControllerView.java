@@ -30,51 +30,13 @@ public class ControllerView {
         return "index";
     }
 
-    @GetMapping("/about")
-    public String about(Model model) {
-        return "about";
-    }
-
-    @GetMapping("/joke-v0")
-    public String joke(Model model) {
-        long start = System.currentTimeMillis(), end = start;
-        var cacheHit = false;
-        var response = Redis.pop("Jokes");
-        JokeResponse joke;
-        if (StringUtil.isNullOrEmpty(response)) {
-            var result = Unirest.get("https://icanhazdadjoke.com/search")
-                    .header("Accept", "application/json")
-                    .queryString("page", random.nextInt(30))
-                    .queryString("limit", 20)
-                    .asString();
-
-            var jokeResponses = gson.fromJson(result.getBody(), JokeResponses.class);
-            var jokes = new ArrayList<String>();
-            for (var i = 1; i < jokeResponses.results.length; i++) {
-                var curJoke = jokeResponses.results[i];
-                var json = gson.toJson(curJoke);
-                jokes.add(json);
-            }
-            Redis.push("Jokes", jokes.toArray(new String[0]));
-
-            end = System.currentTimeMillis();
-            joke = jokeResponses.results[0];
-        } else {
-            end = System.currentTimeMillis();
-            joke = gson.fromJson(response, JokeResponse.class);
-            cacheHit = true;
-        }
-
-        model.addAttribute("joke", joke.joke);
-        model.addAttribute("duration", end-start);
-        model.addAttribute("id", joke.id);
-        model.addAttribute("cacheHit", cacheHit);
-
-        return "joke-v0";
+    @GetMapping("/fhl")
+    public String fhl(Model model) {
+        return "fhl";
     }
 
     @GetMapping("/joke")
-    public String jokev2(Model model) throws Exception {
+    public String jokev(Model model) throws Exception {
         long start = System.currentTimeMillis(), end = start;
         var cacheHit = false;
         var response = Redis.pop("Jokes");
