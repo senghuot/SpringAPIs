@@ -176,23 +176,35 @@
     </div>
 </div>
 
+<!-- Modal -->
+<input type="checkbox" id="video-modal" class="modal-toggle" />
+<div class="modal">
+    <div class="modal-box relative">
+        <!-- Close button -->
+        <label for="video-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <!-- Video Content -->
+        <video controls autoplay class="w-auto h-auto">
+            <source src="demo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
 <div class="flex flex-col md:flex-row justify-center items-center w-9/12 mx-auto space-y-6 md:space-y-0 md:space-x-6 mb-52 mt-20">
     <!-- First Card -->
     <div class="w-full md:w-96 flex items-center justify-center pt-6">
-        <a class="bg-base-100 shadow-xl card border-2 border-base-content/5 card-compact transition-all duration-200 hover:shadow hover:-translate-y-1" target="_blank" rel="noopener noreferrer" href="/fhl">
+        <label for="video-modal" class="bg-base-100 shadow-xl card border-2 border-base-content/5 card-compact transition-all duration-200 hover:shadow hover:-translate-y-1 cursor-pointer" target="_blank" rel="noopener noreferrer">
             <figure style="width: 360; height: 208;" class="w-full h-52">
-                <video loop autoplay muted style="height: 75%">
-                    <source src="llm-lite.mp4" type="video/mp4">
-                </video>
+                <img src="ai.png" class="w-full h-full object-cover" alt="Azure AI"/>
             </figure>
-            <div class="card-body" style="background-color: aliceblue;">
+            <div class="card-body">
                 <h2 class="card-title">
                     FHL Azure AI
-                    <div class="badge badge-primary text-xs badge-outline">NEW</div>
+                    <div class="badge badge-primary text-xs badge-outline">DEMO</div>
                 </h2>
                 <p>LLM to assist on-call engineers 🤖</p>
             </div>
-        </a>
+        </label>
     </div>
     <!-- Second Card -->
     <div class="w-full md:w-96 flex items-center justify-center pt-6">
